@@ -1,4 +1,6 @@
-from onion_svg import SplitSVG
+from onion_svg import OnionSVG
 
-svg = SplitSVG('example.svg')
-svg.save_all('output', dpi = 200)
+svg = OnionSVG('example')
+
+# svg.peel('all', dpi = 100)
+svg.peel("Layer [0-2]", to = "re", dpi = 200)
