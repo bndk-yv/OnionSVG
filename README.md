@@ -1,6 +1,9 @@
 # OnionSVG
 Peel your SVG files with Python.
 
+### Installation:
+`pip install onionsvg`
+
 ### Dependencies:
 * `lxml` for reading SVG files
 * `cairosvg` to render SVG. On Windows, `cairo` has to be installed manually:
