@@ -1,4 +1,4 @@
-from onion_svg import OnionSVG
+from onionsvg import OnionSVG
 import argparse
 
 
