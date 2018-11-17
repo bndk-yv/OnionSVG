@@ -51,6 +51,9 @@ class OnionSVG:
         else:
             self.to = to
 
+        if dpi is None:
+            dpi = self.dpi
+
         if os.path.exists(self.to):
             for file in os.listdir(self.to):
                 os.remove(os.path.join(self.to, file))
@@ -59,21 +62,23 @@ class OnionSVG:
 
         if select == 'all':
             for layer in self.layers:
-                for hidden in self.layers:
-                    hidden.hide()
+                if not layer.constant:
+                    for hidden in self.layers:
+                        hidden.hide()
 
-                layer.show()
-                self.save(subdir(self.to, layer.label + '.png'), dpi)
+                    layer.show()
+                    self.save(subdir(self.to, layer.label + '.png'), dpi)
         else:
             pattern = re.compile(select)
 
             for layer in self.layers:
                 if pattern.match(layer.label):
-                    for hidden in self.layers:
-                        hidden.hide()
-                    layer.show()
+                    if not layer.constant:
+                        for hidden in self.layers:
+                            hidden.hide()
+                        layer.show()
 
-                    self.save(subdir(self.to, layer.label + '.png'), dpi)
+                        self.save(subdir(self.to, layer.label + '.png'), dpi)
 
         print("\n Done.")
 
@@ -112,6 +117,11 @@ class Layer:
         self.root = root
         self.label = label
 
+        if self.label[0] == "_":
+            self.constant = True
+        else:
+            self.constant = False
+
     def __repr__(self):
         try:
             if self.root.attrib['style'] == 'display:none':
@@ -122,8 +132,12 @@ class Layer:
             return f"<{self.label}: Shown>"
 
     def hide(self):
-        self.root.attrib['style'] = 'display:none'
+        if not self.constant:
+            self.root.attrib['style'] = 'display:none'
+        else:
+            self.show(False)
 
-    def show(self):
+    def show(self, log_to_console = True):
         self.root.attrib['style'] = 'display:inline'
-        print(f"{self.label}", end = " --> ")
+        if log_to_console:
+            print(f"{self.label}", end = " --> ")

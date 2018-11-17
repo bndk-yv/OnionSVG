@@ -3,3 +3,4 @@ output/
 __pycache__/
 dist/
 OnionSVG.egg-info/
+build/

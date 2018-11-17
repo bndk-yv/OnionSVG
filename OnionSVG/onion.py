@@ -1,5 +1,7 @@
-from onionsvg import OnionSVG
+from OnionSVG.__init__ import OnionSVG
 import argparse
+
+# todo: possible to add a setup option to install as an executable in $PATH?
 
 
 def str2bool(value):

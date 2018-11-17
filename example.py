@@ -1,4 +1,4 @@
-from onionsvg import OnionSVG
+from OnionSVG.__init__ import OnionSVG
 
 svg = OnionSVG('example')
 
