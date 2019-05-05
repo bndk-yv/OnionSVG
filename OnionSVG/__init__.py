@@ -16,6 +16,24 @@ def subdir(folder, filename):
     return os.path.join(os.path.join(os.getcwd(), folder), filename)
 
 
+def check_svg(path):
+    name, ext = os.path.splitext(path)
+    if ext != 'svg':
+        if os.path.exists(name + '.svg'):
+            path = name + '.svg'
+
+    try:
+        with open(path, 'r') as f:
+            data = f.read()
+            data = bytes(data, encoding='UTF-8')
+    except TypeError:
+        raise TypeError(f"Invalid file")
+
+    try:
+        root = etree.fromstring(data)
+    except etree.XMLSyntaxError:
+        raise TypeError(f"Invalid file")
+
 class OnionSVG:
     def __init__(self, path: str, dpi: int = 200, to: str = None):
         self.path = path
@@ -32,7 +50,7 @@ class OnionSVG:
                 data = f.read()
                 data = bytes(data, encoding = 'UTF-8')
         except TypeError:
-            raise TypeError(f"Invalid type {type(path)} for path")
+            raise TypeError(f"Invalid file")
 
         self.original = data
         ddata = data.decode(encoding = 'UTF-8')
